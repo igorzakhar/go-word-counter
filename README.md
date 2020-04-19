@@ -28,9 +28,6 @@ $ cd go-word-counter
 Пример запуска программы:
 ```bash
 $ cat urls | go run main.go
-```
-Вывод результатов:
-```
 Count for https://golang.org/doc/: 75
 Count for https://golang.org/doc/cmd: 16
 Count for https://golang.org/doc/install: 44
