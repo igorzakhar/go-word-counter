@@ -10,6 +10,8 @@ import (
     "sync"
 )
 
+// структура для хранения результатов каждого запроса
+// включая кол-во вхождений строки "Go" в теле ответа
 type result struct {
     url   string
     count int
@@ -31,9 +33,12 @@ func main() {
     OutputOfResults(resultChannel)
 }
 
+// RunConcurrentTasks запускает параллельные задачи GetWordCount, число одновременно
+// выполняемыx задач ограничено величиной передаваемой в аргументе concurrencyLimit
 func RunConcurrentTasks(done chan bool, resultChan chan *result, concurrencyLimit int) {
 
     var waitgroup sync.WaitGroup
+
     semaphoreChan := make(chan struct{}, concurrencyLimit)
 
     defer func() {
@@ -43,6 +48,7 @@ func RunConcurrentTasks(done chan bool, resultChan chan *result, concurrencyLimi
     scanner := bufio.NewScanner(os.Stdin)
 
     for scanner.Scan() {
+
         semaphoreChan <- struct{}{}
         waitgroup.Add(1)
 
@@ -60,6 +66,8 @@ func RunConcurrentTasks(done chan bool, resultChan chan *result, concurrencyLimi
     done <- true
 }
 
+// GetWordCount отправляет http get запрос на указанный url-адрес и считает
+// кол-во вхождений строки "Go" в теле ответа, возвращает значение типа result
 func GetWordCount(url string) result {
     response, err := http.Get(url)
     if err != nil {
@@ -77,6 +85,9 @@ func GetWordCount(url string) result {
     return result{url, wordCount, err}
 }
 
+// OutputOfResults слушает канал resultChan, при получении результата вычислений каждой задачи
+// GetWordCount выводит его в stdout, аккумулирует значение поля count экземпляра структуры result
+// в переменной totalCount и по окончании цикла чтения из канала выводит его в stdout
 func OutputOfResults(resultChan chan *result) {
     totalCount := 0
 
