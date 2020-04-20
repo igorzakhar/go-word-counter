@@ -36,9 +36,7 @@ func main() {
 // RunConcurrentTasks запускает параллельные задачи GetWordCount, число одновременно
 // выполняемыx задач ограничено величиной передаваемой в аргументе concurrencyLimit
 func RunConcurrentTasks(done chan bool, resultChan chan *result, concurrencyLimit int) {
-
     var waitgroup sync.WaitGroup
-
     semaphoreChan := make(chan struct{}, concurrencyLimit)
 
     defer func() {
@@ -48,7 +46,6 @@ func RunConcurrentTasks(done chan bool, resultChan chan *result, concurrencyLimi
     scanner := bufio.NewScanner(os.Stdin)
 
     for scanner.Scan() {
-
         semaphoreChan <- struct{}{}
         waitgroup.Add(1)
 
