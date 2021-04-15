@@ -25,7 +25,7 @@ $ cd go-word-counter
 ```
 В репозитории с проектом находится файл ```urls``` со списком url-адресов. Для проверки того, что в ходе работы программы ничего не ломается, при передаче невалидного url-адреса, в список url-адресов добавлены строки вида ```abcdefg```, ```1234565```, ```https://```.
 
-Пример запуска программы:
+#### Пример запуска программы:
 ```bash
 $ cat urls | go run main.go
 Count for https://golang.org/doc/: 75
@@ -37,4 +37,14 @@ Count for https://golang.org/pkg/: 36
 Count for https://golang.org/pkg/bufio/: 29
 Count for https://golang.org/ref/spec: 41
 Total: 303
+```
+
+#### Пример запуска программы в Docker
+Для начала нужно создать Docker-образ:
+```bash
+$ docker image build -t go-word-counter
+```
+Запуск контейнера:
+```bash
+$ cat urls | docker run -i go-word-counter
 ```
