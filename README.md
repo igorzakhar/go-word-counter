@@ -42,7 +42,7 @@ Total: 303
 #### Пример запуска программы в Docker
 Для начала нужно создать Docker-образ:
 ```bash
-$ docker image build -t go-word-counter
+$ docker image build -t go-word-counter .
 ```
 Запуск контейнера:
 ```bash
